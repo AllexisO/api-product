@@ -1,65 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
   <defs>
-    <!-- Множественные фильтры для реалистичного неонового свечения -->
-    <filter id="neonTextGlow" x="-100%" y="-100%" width="300%" height="300%">
-      <!-- Внешнее сильное свечение -->
-      <feGaussianBlur stdDeviation="8" result="glow3"/>
-      <!-- Среднее свечение -->
-      <feGaussianBlur stdDeviation="4" result="glow2"/>
-      <!-- Внутреннее свечение -->
-      <feGaussianBlur stdDeviation="2" result="glow1"/>
-      <!-- Объединяем все слои -->
-      <feMerge>
-        <feMergeNode in="glow3"/>
-        <feMergeNode in="glow2"/>
-        <feMergeNode in="glow1"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <!-- Бирюзово-зеленый градиент как во втором варианте -->
+    <linearGradient id="tealGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4aa"/>
+      <stop offset="100%" style="stop-color:#00a8cc"/>
+    </linearGradient>
     
-    <!-- Свечение для рамки -->
-    <filter id="borderGlow" x="-50%" y="-50%" width="200%" height="200%">
-      <!-- Внешнее свечение рамки -->
-      <feGaussianBlur stdDeviation="6" result="outerGlow"/>
-      <!-- Среднее свечение -->
-      <feGaussianBlur stdDeviation="3" result="middleGlow"/>
-      <feMerge>
-        <feMergeNode in="outerGlow"/>
-        <feMergeNode in="middleGlow"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-
-    <!-- Внутреннее свечение -->
-    <filter id="innerGlow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="8" result="blur"/>
-      <feComposite in="blur" in2="SourceGraphic" operator="multiply"/>
+    <!-- Тень -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="rgba(0,0,0,0.15)"/>
     </filter>
   </defs>
   
-  <!-- Черный фон логотипа -->
-  <rect x="0" y="0" width="120" height="120" rx="15" ry="15" fill="#000000"/>
+  <!-- Основной фон с градиентом и закругленными углами -->
+  <rect x="0" y="0" width="120" height="120" rx="20" ry="20" 
+        fill="url(#tealGradient)" filter="url(#shadow)"/>
   
-  <!-- Светящаяся рамка - точно как в CSS -->
-  <rect x="2" y="2" width="116" height="116" rx="13" ry="13" 
-        fill="none" 
-        stroke="#00f2fe" 
-        stroke-width="2" 
-        filter="url(#borderGlow)"/>
-  
-  <!-- Внутреннее свечение (inset box-shadow эффект) -->
-  <rect x="4" y="4" width="112" height="112" rx="11" ry="11" 
-        fill="rgba(0, 242, 254, 0.1)" 
-        opacity="0.5"/>
-  
-  <!-- Главный текст {} с многослойным свечением -->
-  <text x="60" y="72" 
-        text-anchor="middle" 
+  <!-- Скобки {} -->
+  <text x="60" y="75" text-anchor="middle" 
         font-family="Arial, sans-serif" 
-        font-size="32" 
+        font-size="48" 
         font-weight="bold" 
-        fill="#00f2fe" 
-        filter="url(#neonTextGlow)">
+        fill="white">
     {}
   </text>
+  
+  <!-- Анимированные точки (без центральной) -->
+  <circle cx="45" cy="60" r="3" fill="white" opacity="0.6">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="75" cy="60" r="3" fill="white" opacity="0.6">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+  </circle>
 </svg>
