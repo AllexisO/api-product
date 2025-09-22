@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe"/>
+      <stop offset="100%" style="stop-color:#00f2fe"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="rgba(0,0,0,0.15)"/>
+    </filter>
+  </defs>
+  
+  <!-- Основной фон логотипа -->
+  <rect x="0" y="0" width="200" height="200" rx="25" ry="25" fill="url(#logoGradient)" filter="url(#shadow)"/>
+  
+  <!-- API скобки -->
+  <text x="100" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="white" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3)">{}</text>
+  
+  <!-- Анимированные точки -->
+  <circle cx="85" cy="100" r="4" fill="white" opacity="0.6">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="100" cy="100" r="4" fill="white" opacity="0.8">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="115" cy="100" r="4" fill="white" opacity="0.6">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+  </circle>
+</svg>
