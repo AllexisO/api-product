@@ -162,6 +162,7 @@ app.get('/', (req, res) => {
     res.send('<h1>HELLO</h1>')
 });
 
+// GET all products
 app.get('/api/products', async (req, res) => {
     const query = `SELECT * FROM products ORDER BY id`;
     const result = await client.query(query);
@@ -210,6 +211,7 @@ app.post('/api/products', async (req, res) => {
     });
 });
 
+// GET products by ID
 app.get('/api/products/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -226,6 +228,21 @@ app.get('/api/products/:id', async (req, res) => {
     res.json({
         success: true,
         data: result.rows[0]
+    });
+});
+
+// GET products by category
+app.get('/api/products/category/:category', async (req, res) => {
+    const { category } = req.params;
+
+    const query = `SELECT * FROM products WHERE category = $1 ORDER BY id`;
+    const result = await client.query(query, [category]);
+
+    res.json({
+        success: true,
+        category: category,
+        count: result.rowCount,
+        data: result.rows
     });
 });
 
