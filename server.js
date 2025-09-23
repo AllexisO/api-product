@@ -211,7 +211,7 @@ app.post('/api/products', async (req, res) => {
 });
 
 app.get('/api/products/:id', async (req, res) => {
-    
+    const { id } = req.params;
 });
 
 app.listen(3000, () => {
