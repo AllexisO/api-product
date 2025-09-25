@@ -246,6 +246,35 @@ app.get('/api/products/category/:category', async (req, res) => {
     });
 });
 
+// Update products
+app.put('/api/products/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, category, price, description, brand } = req.body;
+
+    // Check require files
+    if (!name || !category || !price || !brand) {
+        return res.status(400).json({
+            success: false,
+            error: 'Files name, category, price and brand are required!'
+        });
+    }
+
+    const query = `UPDATE products SET name = $1, category = $2, price = $3, description = $4, brand = $5 WHERE id = $6 RETURNING *`;
+    const result = await client.query(query, [name, category, price, description, brand, id]);
+
+    if(result.rowCount === 0) {
+        return res.status(404).json({
+            success: false,
+            error: `Product with ID ${id} was not found ...`
+        });
+    }
+
+    res.json({
+        success: true,
+        data: result.rows[0]
+    });
+});
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000!');
 });
