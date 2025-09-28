@@ -275,6 +275,26 @@ app.put('/api/products/:id', async (req, res) => {
     });
 });
 
+app.delete('/api/products/:id', async (req, res) => {
+  const { id } = req.params;
+  
+  const query = `DELETE FROM products WHERE id = $1 RETURNING *`;
+  const result = await client.query(query, [id]);
+  
+  if (result.rowCount === 0) {
+    return res.status(404).json({
+      success: false,
+      error: `Product with ID ${id} was not found`
+    });
+  }
+  
+  res.json({
+    success: true,
+    message: 'Product Removed',
+    data: result.rows[0]
+  });
+});
+
 app.listen(3001, () => {
     console.log('Server is running on port 3001!');
 });
