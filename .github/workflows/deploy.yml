@@ -1,4 +1,4 @@
-name: Deploy to TrueNAS
+name: Deploy Proxy to TrueNAS
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /mnt/applications/BestPrice/api-product
+            cd /mnt/applications/BestPrice/proxy-product
             git pull origin master
             cd /mnt/applications/BestPrice
-            docker compose restart api-product
+            docker compose restart proxy-product
