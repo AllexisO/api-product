@@ -17,6 +17,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /mnt/applications/BestPrice/proxy-product
-            git pull origin master
+            sudo git pull origin master
             cd /mnt/applications/BestPrice
-            docker compose restart proxy-product
+            sudo docker compose restart proxy-product
