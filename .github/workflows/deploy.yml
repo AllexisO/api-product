@@ -12,5 +12,5 @@ jobs:
       - name: Deploy
         run: |
           cd /mnt/applications/BestPrice/api-product
-          git pull
-          docker compose restart api-product
+          sudo git pull
+          sudo docker compose restart api-product
