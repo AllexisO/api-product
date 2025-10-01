@@ -1,22 +1,37 @@
-name: Deploy Proxy to TrueNAS
+name: Deploy to TrueNAS
 
 on:
   push:
     branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /mnt/applications/BestPrice/proxy-product
-            sudo git pull origin master
+      - name: Install cloudflared
+        run: |
+          wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared-linux-amd64.deb
+          
+      - name: Setup SSH config
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          cat >> ~/.ssh/config <<EOF
+          Host truenas
+            HostName ssh.allexisnascloud.site
+            User ${{ secrets.SSH_USERNAME }}
+            ProxyCommand cloudflared access ssh --hostname %h
+          EOF
+          
+      - name: Deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no truenas << 'EOF'
+            cd /mnt/applications/BestPrice/api-product
+            git pull origin master
             cd /mnt/applications/BestPrice
-            sudo docker compose restart proxy-product
+            docker compose restart api-product
+          EOF
