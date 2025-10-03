@@ -163,7 +163,7 @@ app.get('/', (req, res) => {
 });
 
 // GET all products
-app.get('/api/products', async (req, res) => {
+app.get('/api/v1/products', async (req, res) => {
     const query = `SELECT * FROM products ORDER BY id`;
     const result = await client.query(query);
 
@@ -174,7 +174,7 @@ app.get('/api/products', async (req, res) => {
     });
 });
 
-app.post('/api/products', async (req, res) => {
+app.post('/api/v1/products', async (req, res) => {
     const { name, category, price, description, brand } = req.body;
 
     // Check required fields
@@ -212,7 +212,7 @@ app.post('/api/products', async (req, res) => {
 });
 
 // GET products by ID
-app.get('/api/products/:id', async (req, res) => {
+app.get('/api/v1/products/:id', async (req, res) => {
     const { id } = req.params;
 
     const query = `SELECT * FROM products WHERE id = $1`;
@@ -232,7 +232,7 @@ app.get('/api/products/:id', async (req, res) => {
 });
 
 // GET products by category
-app.get('/api/products/category/:category', async (req, res) => {
+app.get('/api/v1/products/category/:category', async (req, res) => {
     const { category } = req.params;
 
     const query = `SELECT * FROM products WHERE category = $1 ORDER BY id`;
@@ -247,7 +247,7 @@ app.get('/api/products/category/:category', async (req, res) => {
 });
 
 // Update products
-app.put('/api/products/:id', async (req, res) => {
+app.put('/api/v1/products/:id', async (req, res) => {
     const { id } = req.params;
     const { name, category, price, description, brand } = req.body;
 
@@ -275,7 +275,7 @@ app.put('/api/products/:id', async (req, res) => {
     });
 });
 
-app.delete('/api/products/:id', async (req, res) => {
+app.delete('/api/v1/products/:id', async (req, res) => {
   const { id } = req.params;
   
   const query = `DELETE FROM products WHERE id = $1 RETURNING *`;
