@@ -48,3 +48,32 @@ const listApiKeys = async (req, res) => {
         });
     }
 };
+
+const revokeApiKey = async (req, res) => {
+    const { id } = req.params;
+
+    const query = `UPDATE api_keys SET is_active = false WHERE id = $1 RETURNING *`;
+
+    try {
+        const result = await client.query(query, [id]);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({
+                success: false,
+                error: 'API Key not found!'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'API Key revoked!'
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to revoke API Key'
+        });
+    }
+};
+
+module.exports = { generateApiKey, listApiKeys, revokeApiKey };
