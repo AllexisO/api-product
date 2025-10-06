@@ -29,4 +29,22 @@ const generateApiKey = async (req, res) => {
             error: 'Failed to generate API key'
         });
     }
-}
+};
+
+const listApiKeys = async (req, res) => {
+    const query = `SELECT id, key_name, created_at, last_used, is_active FROM api_keys ORDER BY created_at DESC`;
+
+    try {
+        const result = await client.query(query);
+
+        res.json({
+            success: true,
+            data: result.rows
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to list API keys'
+        });
+    }
+};
