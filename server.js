@@ -1,18 +1,8 @@
+const { authenticationToken } = require('./middleware/auth');
 require('dotenv').config();
 const express = require("express");
 const { Client } = require("pg");
-
-// New object from class Client
-const client = new Client({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
-})
-
-// Connection to DB
-client.connect();
+const client = require('./config/database');
 
 // Check connection to DB and get Time from DB
 async function testDatabase() {
@@ -158,6 +148,10 @@ getAllProducts();
 const app = express();
 app.use(express.json());
 
+// Routes
+const authRoutes = require('./routes/auth');
+app.use('/api/v1/auth', authRoutes);
+
 app.get('/', (req, res) => {
     res.send('<h1>HELLO</h1>')
 });
@@ -174,7 +168,7 @@ app.get('/api/v1/products', async (req, res) => {
     });
 });
 
-app.post('/api/v1/products', async (req, res) => {
+app.post('/api/v1/products', authenticationToken, async (req, res) => {
     const { name, category, price, description, brand } = req.body;
 
     // Check required fields
@@ -247,7 +241,7 @@ app.get('/api/v1/products/category/:category', async (req, res) => {
 });
 
 // Update products
-app.put('/api/v1/products/:id', async (req, res) => {
+app.put('/api/v1/products/:id', authenticationToken, async (req, res) => {
     const { id } = req.params;
     const { name, category, price, description, brand } = req.body;
 
@@ -275,7 +269,7 @@ app.put('/api/v1/products/:id', async (req, res) => {
     });
 });
 
-app.delete('/api/v1/products/:id', async (req, res) => {
+app.delete('/api/v1/products/:id', authenticationToken, async (req, res) => {
   const { id } = req.params;
   
   const query = `DELETE FROM products WHERE id = $1 RETURNING *`;
