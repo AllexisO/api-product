@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require("express");
 const { Client } = require("pg");
 const client = require('./config/database');
+const apiKeyRoutes = require('./routes/apiKeys');
 
 // Check connection to DB and get Time from DB
 async function testDatabase() {
@@ -151,6 +152,8 @@ app.use(express.json());
 // Routes
 const authRoutes = require('./routes/auth');
 app.use('/api/v1/auth', authRoutes);
+
+app.use('/api/v1/apikeys', apiKeyRoutes);
 
 app.get('/', (req, res) => {
     res.send('<h1>HELLO</h1>')
